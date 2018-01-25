@@ -1,0 +1,64 @@
+<template>
+  <view class="module-list">
+    <view class="module-list-item"
+          wx:for="{{moduleList}}"
+          wx:key="index"
+          wx:for-index="index"
+          wx:for-item="item"
+    >
+      <image src="{{item.icon}}" class="module-icon"/>
+      <view class="module-name">
+        <text class="module-name-text">{{item.moduleName}}</text>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+
+  export default class HomeModuleList extends wepy.component {
+    config = {};
+
+    components = {};
+
+    props = {
+      moduleList: {
+        type: Array
+      }
+    };
+
+    data = {};
+
+    methods = {};
+
+    events = {};
+
+    onLoad() {
+    };
+  }
+</script>
+
+<style lang="less">
+  .module-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    background: #ffffff;
+    .module-list-item {
+      flex: 0 0 25%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 15px;
+      .module-icon {
+        width: 46px;
+        height: 46px;
+      }
+      .module-name-text {
+        font-size: 12px;
+      }
+    }
+  }
+</style>

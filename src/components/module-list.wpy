@@ -1,0 +1,71 @@
+<template>
+  <view class="module-list">
+    <view class="module-list-item"
+          wx:for="{{moduleList}}"
+          wx:key="index"
+          wx:for-index="index"
+          wx:for-item="item"
+    >
+      <image src="{{item.icon}}" class="module-icon"/>
+      <view class="module-name">
+        <text class="module-name-text">{{item.moduleName}}</text>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+
+  export default class HomeModuleList extends wepy.component {
+    config = {};
+
+    components = {};
+
+    data = {
+      moduleList: [
+        {
+          icon: 'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
+          moduleName: '门诊模块'
+        },
+        {
+          icon: 'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
+          moduleName: '门诊模块'
+        },
+        {
+          icon: 'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
+          moduleName: '门诊模块'
+        },
+        {
+          icon: 'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
+          moduleName: '门诊模块'
+        }
+      ]
+    };
+
+    methods = {};
+
+    events = {};
+
+    onLoad() {
+      console.log('loading module')
+    };
+  }
+</script>
+
+<style lang="less">
+  .module-list {
+    display: flex;
+    flex-direction: row;
+    .module-list-item{
+      flex: 0 0 25%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .module-icon {
+        width: 46px;
+        height: 46px;
+      }
+    }
+  }
+</style>

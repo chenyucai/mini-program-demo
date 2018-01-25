@@ -1,0 +1,46 @@
+<template>
+  <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+    <block wx:for="{{bannerList}}" wx:key="{{item}}">
+      <swiper-item>
+        <image src="{{item}}" class="slide-image" @tap="tap" style="width: 100%"/>
+      </swiper-item>
+    </block>
+  </swiper>
+</template>
+
+<script>
+  import wepy from 'wepy';
+
+  export default class HomeBanner extends wepy.component {
+    props = {
+      bannerList: {
+        type: Array,
+        default: []
+      }
+    };
+
+    watch = {
+      bannerList(val) {
+        console.log(val)
+      }
+    };
+
+    data = {
+      indicatorDots: false,
+      autoplay: false,
+      interval: 5000,
+      duration: 1000
+    };
+
+    methods = {};
+
+    events = {};
+
+    onLoad() {
+    };
+  }
+</script>
+
+<style lang="less">
+
+</style>

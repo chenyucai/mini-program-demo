@@ -1,0 +1,104 @@
+<style lang="less">
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+</style>
+
+<script>
+  import wepy from 'wepy';
+  import 'wepy-async-function';
+  import 'promise-polyfill';
+
+  export default class extends wepy.app {
+    constructor() {
+      super();
+      this.use('requestfix');
+      this.use('promisify');
+    }
+
+    globalData = {
+      userInfo: null
+    };
+
+    onLaunch() {
+      this.testAsync()
+    }
+
+    sleep(s) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve('promise resolved')
+        }, s * 1000)
+      })
+    }
+
+    async testAsync() {
+      const data = await this.sleep(3);
+      console.log(data)
+    }
+
+    getUserInfo(cb) {
+      console.log(1)
+      const that = this;
+      if (this.globalData.userInfo) {
+        return this.globalData.userInfo
+      }
+      wepy.getUserInfo({
+        success(res) {
+          that.globalData.userInfo = res.userInfo;
+          cb && cb(res.userInfo)
+        }
+      })
+    }
+
+    config = {
+      pages: [
+        'pages/home/home'
+      ],
+      window: {
+        navigationBarBackgroundColor: '#FF8DA1',
+        navigationBarTextStyle: 'white',
+        backgroundColor: '#F2F2F2',
+        backgroundTextStyle: 'black',
+        navigationBarTitleText: '若初医助'
+      },
+      tabBar: {
+        color: '#333333',
+        selectedColor: '#FF8DA1',
+        backgroudColor: '#FFFFFF',
+        borderStyle: 'black',
+        list: [
+          {
+            text: '首页',
+            pagePath: 'pages/home/home',
+            iconPath: 'images/tabbar-home.png',
+            selectedIconPath: 'images/tabbar-home-select.png'
+          },
+          {
+            text: '知识库',
+            pagePath: 'pages/index',
+            iconPath: 'images/tabbar-teach.png',
+            selectedIconPath: 'images/tabbar-teach-select.png'
+          },
+          {
+            text: '记录',
+            pagePath: 'pages/index',
+            iconPath: 'images/tabbar-record.png',
+            selectedIconPath: 'images/tabbar-record-select.png'
+          },
+          {
+            text: '我的',
+            pagePath: 'pages/index',
+            iconPath: 'images/tabbar-user.png',
+            selectedIconPath: 'images/tabbar-user-select.png'
+          }
+        ]
+      }
+    };
+  }
+</script>

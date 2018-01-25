@@ -1,0 +1,124 @@
+<template>
+  <view class="home-page am-fade-in" hidden="{{!showPage}}">
+    <!--轮播图-->
+    <swiper autoplay indicator-dots style="height:{{swipeHeight}};">
+      <block wx:for="{{bannerList}}" wx:key="{{item}}">
+        <swiper-item>
+          <image src="{{item}}" class="slide-image" @tap="tap" style="width: 100%;"/>
+        </swiper-item>
+      </block>
+    </swiper>
+
+    <!--模块-->
+    <view class="module-list">
+      <view class="module-list-item"
+            wx:for="{{moduleList}}"
+            wx:key="index"
+            wx:for-index="index"
+            wx:for-item="item"
+      >
+        <image src="{{item.moduleIcon}}" class="module-icon"/>
+        <view class="module-name">
+          <text class="module-name-text">{{item.moduleName}}</text>
+        </view>
+      </view>
+    </view>
+
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import {getImageUrl} from '../../utils/base';
+  import {
+    getUserInfo,
+    getAgencyInfo,
+    getAgencyModule
+  } from '../../api/api';
+
+  export default class Home extends wepy.page {
+    config = {
+      backgroundColor: '#f2f2f2',
+      navigationBarTitleText: '首页',
+      enablePullDownRefresh: true
+    };
+
+    components = {};
+
+    data = {
+      showPage: false,
+      userInfo: {},
+      agencyInfo: {},
+      bannerList: [],
+      moduleList: [],
+      swipeHeight: '176px'
+    };
+
+    methods = {};
+
+    events = {};
+
+    onLoad() {
+      var res = wepy.getSystemInfoSync();
+      console.log(JSON.stringify(res))
+      // 获取用户信息
+      getUserInfo().then((res) => {
+        this.userInfo = res;
+        wepy.setStorageSync('userInfo', this.userInfo);
+      });
+
+      // 获取机构信息
+      getAgencyInfo().then((res) => {
+        this.agencyInfo = res;
+        this.bannerList = res.patientCovers.map(n => getImageUrl(n));
+        this.$apply();
+      });
+
+      // 获取机构模块
+      getAgencyModule().then((res) => {
+        this.moduleList = res.map(md => {
+          return {
+            ...md,
+            moduleIcon: getImageUrl(md.moduleIcon)
+          }
+        });
+        this.showPage = true;
+        this.$apply();
+      });
+
+      // 设置banner高度
+      const windowWidth = wepy.getSystemInfoSync().windowWidth;
+      this.swipeHeight = (windowWidth / 2.14 ) + 'px';
+    };
+  }
+</script>
+
+<style lang="less">
+  @import "../../styles/animate";
+
+  page {
+    background: #f2f2f2;
+  }
+
+  .module-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    background: #ffffff;
+    .module-list-item {
+      flex: 0 0 25%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 15px;
+      .module-icon {
+        width: 46px;
+        height: 46px;
+      }
+      .module-name-text {
+        font-size: 12px;
+      }
+    }
+  }
+</style>
